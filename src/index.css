@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-maroon: 107 29 47;
+    --color-gold: 212 175 55;
+    --color-emerald: 14 77 62;
+    --color-silk: 250 246 240;
+    --color-charcoal: 26 26 26;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #FAF6F0;
+    color: #1A1A1A;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* Pill Button Preset matching the reference Search Pill style */
+  .btn-pill {
+    @apply rounded-full inline-flex items-center justify-center font-semibold transition-all duration-200 shadow-sm active:scale-[0.98];
+  }
+  .btn-pill-primary {
+    @apply rounded-full inline-flex items-center justify-center font-semibold text-white bg-[#0A4D40] hover:bg-[#062E28] shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98];
+  }
+  .btn-pill-dark {
+    @apply rounded-full inline-flex items-center justify-center font-semibold text-white bg-stone-900 hover:bg-stone-950 shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98];
+  }
+}
+
+/* Custom Luxury Gradients & Accents */
+.gold-shimmer {
+  background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA820A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border {
+  border-image: linear-gradient(to right, #D4AF37, #F3E5AB, #D4AF37) 1;
+}
+
+.silk-shadow {
+  box-shadow: 0 10px 30px -10px rgba(107, 29, 47, 0.08);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scaleUp {
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Professional Numeric and Currency Display (Tabular Lining Figures) */
+.font-price,
+.tabular-nums,
+[data-price] {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-variant-numeric: tabular-nums lining-nums !important;
+  -webkit-font-feature-settings: "tnum" 1, "lnum" 1 !important;
+  font-feature-settings: "tnum" 1, "lnum" 1 !important;
+}
+
+/* Remove unwanted default browser focus boxes/rectangles on interactive elements */
+a,
+button,
+[role="button"],
+input,
+select {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+}
+
+a:focus,
+a:focus-visible,
+button:focus,
+button:focus-visible,
+[role="button"]:focus,
+[role="button"]:focus-visible,
+nav a:focus,
+nav a:focus-visible,
+nav button:focus,
+nav button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+/* Mobile App Safe Area Utilities & Touch Smoothness */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Prevent unwanted bounce on iOS standalone app while allowing smooth internal scroll */
+html, body {
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Standalone app styling */
+@media all and (display-mode: standalone) {
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+/* Luxury Dual Range Slider - Compact Theme Hollow Bubble Thumbs */
+.glass-bubble-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background-color: #FFFFFF;
+  border: 2px solid #0A4D40;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.12s ease;
+  z-index: 20;
+}
+
+.glass-bubble-thumb::before,
+.glass-bubble-thumb::after {
+  display: none !important;
+}
+
+.glass-bubble-thumb:hover {
+  transform: translate(-50%, -50%) scale(1.18) !important;
+  box-shadow: 0 2px 6px rgba(10, 77, 64, 0.22) !important;
+}
+
+.glass-bubble-thumb:active {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.22) !important;
+  box-shadow: 0 0 0 4px rgba(10, 77, 64, 0.16), 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+

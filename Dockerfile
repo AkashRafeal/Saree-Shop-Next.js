@@ -1,30 +1,45 @@
-# Multi-stage build for Spring Boot with Java 21 (from repo root)
-FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
+# Next.js Production Dockerfile
+FROM node:20-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Cache dependencies
-COPY backend/pom.xml .
-RUN mvn dependency:go-offline -B || true
+COPY package.json package-lock.json* ./
+COPY prisma ./prisma/
+RUN npm ci
 
-# Copy source and build jar
-COPY backend/src ./src
-RUN mvn clean package -DskipTests
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
-# Runtime image
-FROM eclipse-temurin:21-jre-alpine
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN npx prisma generate
+RUN npm run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
 WORKDIR /app
 
-RUN addgroup -S appgroup && \
-    adduser -S appuser -G appgroup && \
-    mkdir -p /app/uploads && \
-    chown -R appuser:appgroup /app
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 
-USER appuser
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/prisma ./prisma
 
-EXPOSE 8080
-ENV PORT=8080
-ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC"
+USER nextjs
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["npm", "run", "start"]

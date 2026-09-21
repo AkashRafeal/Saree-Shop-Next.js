@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E91E63" />
+      <stop offset="50%" stop-color="#D81B60" />
+      <stop offset="100%" stop-color="#880E4F" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3B0" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#AA820A" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#roseGrad)" />
+  <circle cx="256" cy="256" r="210" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-dasharray="8 8" opacity="0.4" />
+  
+  <!-- Stylized Royal 'S' Saree Pleats Monogram -->
+  <path d="M 280 140 C 220 140 180 170 180 215 C 180 270 330 250 330 310 C 330 355 285 375 235 375 C 190 375 160 350 150 330" 
+        fill="none" stroke="url(#goldGrad)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Sparkle motif -->
+  <path d="M 350 150 Q 350 180 375 180 Q 350 180 350 210 Q 350 180 325 180 Q 350 180 350 150 Z" fill="url(#goldGrad)" />
+  <path d="M 160 310 Q 160 325 175 325 Q 160 325 160 340 Q 160 325 145 325 Q 160 325 160 310 Z" fill="url(#goldGrad)" opacity="0.8" />
+  
+  <!-- Brand text below -->
+  <text x="256" y="440" font-family="'Playfair Display', Georgia, serif" font-size="44" font-weight="bold" fill="#FAF6F0" text-anchor="middle" letter-spacing="6">
+    SAREEAURA
+  </text>
+</svg>

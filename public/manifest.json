@@ -1,0 +1,27 @@
+{
+  "name": "NiVi Couture | Luxury Sarees & Designer Atelier",
+  "short_name": "NiVi Couture",
+  "description": "NiVi Couture - Elegance Refined, Soul Defined. Exquisite handwoven Kanchipuram, Banarasi, Silk, and Bridal Sarees.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#062E28",
+  "theme_color": "#062E28",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"]
+}

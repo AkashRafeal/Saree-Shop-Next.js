@@ -1,4 +1,3 @@
-
 version: '3.8'
 
 services:
@@ -13,7 +12,6 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - sareeaura-net
     healthcheck:
@@ -22,42 +20,23 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
+  app:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
-    container_name: sareeaura-backend
+    container_name: sareeaura-app
     restart: unless-stopped
     depends_on:
       mysql:
         condition: service_healthy
     environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_NAME: sareeaura_db
-      DB_USER: root
-      DB_PASSWORD: root
-      JWT_SECRET: ${JWT_SECRET:-SareeAuraSuperSecretLuxurySilkAndZariKey2026WithSufficientLengthHMACSHA256}
-      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-rzp_test_sareeaura2026}
-      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-secret_sareeaura_test_key_2026}
-      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-sareeaura-demo}
-      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-123456789012345}
-      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-abcdefghijklmnopqrstuvwxyz12345}
+      DATABASE_URL: mysql://root:root@mysql:3306/sareeaura_db
+      PORT: 3000
+      JWT_SECRET: ${JWT_SECRET:-SareeShopSuperSecretLuxuryKey2026WithSufficientLengthForHMACSHA256Algorithm}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-rzp_test_sareeshop2026}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-secret_sareeshop_key_2026}
     ports:
-      - "8080:8080"
-    networks:
-      - sareeaura-net
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: sareeaura-frontend
-    restart: unless-stopped
-    depends_on:
-      - backend
-    ports:
-      - "5173:80"
+      - "3000:3000"
     networks:
       - sareeaura-net
 

@@ -1,0 +1,391 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            BigInt        @id @default(autoincrement())
+  active        Boolean       @db.Bit(1)
+  created_at    DateTime?     @db.DateTime(6)
+  email         String        @unique(map: "UK6dotkott2kjsp8vw4d0m25fb7") @db.VarChar(100)
+  first_name    String        @db.VarChar(50)
+  last_name     String        @db.VarChar(50)
+  password      String        @db.VarChar(255)
+  phone         String?       @db.VarChar(20)
+  updated_at    DateTime?     @db.DateTime(6)
+  addresses     Address[]
+  carts         Cart?
+  coupon_usages CouponUsage[]
+  orders        Order[]
+  reviews       Review[]
+  user_roles    UserRole[]
+  wishlists     Wishlist?
+
+  @@map("users")
+}
+
+model Role {
+  id         BigInt     @id @default(autoincrement())
+  name       RoleType   @unique(map: "UKofx66keruapi6vyqpv6f2or37")
+  user_roles UserRole[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  user_id BigInt
+  role_id BigInt
+  roles   Role   @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKh8ciramu9cc9q3qcqiv4ue8a6")
+  users   User   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKhfh9dx7w3ubf1co1vdev94g3f")
+
+  @@id([user_id, role_id])
+  @@index([role_id], map: "FKh8ciramu9cc9q3qcqiv4ue8a6")
+  @@map("user_roles")
+}
+
+model Address {
+  id            BigInt                  @id @default(autoincrement())
+  address_line1 String                  @db.VarChar(255)
+  address_line2 String?                 @db.VarChar(255)
+  address_type  addresses_address_type?
+  city          String                  @db.VarChar(100)
+  country       String                  @db.VarChar(50)
+  created_at    DateTime?               @db.DateTime(6)
+  full_name     String                  @db.VarChar(100)
+  is_default    Boolean?                @db.Bit(1)
+  phone         String                  @db.VarChar(20)
+  postal_code   String                  @db.VarChar(20)
+  state         String                  @db.VarChar(100)
+  updated_at    DateTime?               @db.DateTime(6)
+  user_id       BigInt
+  users         User                    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK1fa36y2oqhao3wgg2rw1pi459")
+  orders        Order[]
+
+  @@index([user_id], map: "FK1fa36y2oqhao3wgg2rw1pi459")
+  @@map("addresses")
+}
+
+model Category {
+  id               BigInt     @id @default(autoincrement())
+  active           Boolean    @db.Bit(1)
+  created_at       DateTime?  @db.DateTime(6)
+  description      String?    @db.Text
+  image_url        String?    @db.VarChar(255)
+  name             String     @unique(map: "UKt8o6pivur7nn124jehx7cygw5") @db.VarChar(100)
+  slug             String     @unique(map: "UKoul14ho7bctbefv8jywp5v3i2") @db.VarChar(100)
+  updated_at       DateTime?  @db.DateTime(6)
+  parent_id        BigInt?
+  categories       Category?  @relation("categoriesTocategories", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKsaok720gsu4u2wrgbk10b5n8d")
+  other_categories Category[] @relation("categoriesTocategories")
+  products         Product[]
+
+  @@index([parent_id], map: "FKsaok720gsu4u2wrgbk10b5n8d")
+  @@map("categories")
+}
+
+model Product {
+  id                  BigInt         @id @default(autoincrement())
+  active              Boolean        @db.Bit(1)
+  blouse_details      String?        @db.VarChar(100)
+  color               String?        @db.VarChar(50)
+  created_at          DateTime?      @db.DateTime(6)
+  description         String         @db.Text
+  discount_percentage Int?
+  fabric              String?        @db.VarChar(100)
+  is_best_seller      Boolean?       @db.Bit(1)
+  is_featured         Boolean?       @db.Bit(1)
+  is_new_arrival      Boolean?       @db.Bit(1)
+  low_stock_threshold Int?
+  mrp                 Decimal        @db.Decimal(10, 2)
+  name                String         @db.VarChar(200)
+  occasion            String?        @db.VarChar(100)
+  pattern             String?        @db.VarChar(100)
+  rating              Decimal?       @db.Decimal(3, 2)
+  review_count        Int?
+  saree_length        String?        @db.VarChar(50)
+  selling_price       Decimal        @db.Decimal(10, 2)
+  sku                 String         @unique(map: "UKfhmd06dsmj6k0n90swsh8ie9g") @db.VarChar(50)
+  stock               Int
+  updated_at          DateTime?      @db.DateTime(6)
+  category_id         BigInt
+  cart_items          CartItem[]
+  inventory           inventory?
+  order_items         OrderItem[]
+  product_images      ProductImage[]
+  categories          Category       @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKog2rp4qthbtt2lfyhfo32lsw9")
+  reviews             Review[]
+  wishlist_items      WishlistItem[]
+
+  @@index([category_id], map: "FKog2rp4qthbtt2lfyhfo32lsw9")
+  @@map("products")
+}
+
+model ProductImage {
+  id            BigInt   @id @default(autoincrement())
+  display_order Int?
+  image_url     String   @db.LongText
+  is_primary    Boolean? @db.Bit(1)
+  product_id    BigInt
+  products      Product  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKqnq71xsohugpqwf3c9gxmsuy")
+
+  @@index([product_id], map: "FKqnq71xsohugpqwf3c9gxmsuy")
+  @@map("product_images")
+}
+
+model Cart {
+  id         BigInt     @id @default(autoincrement())
+  created_at DateTime?  @db.DateTime(6)
+  updated_at DateTime?  @db.DateTime(6)
+  user_id    BigInt     @unique(map: "UK64t7ox312pqal3p7fg9o503c2")
+  cart_items CartItem[]
+  users      User       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKb5o626f86h46m4s7ms6ginnop")
+
+  @@map("carts")
+}
+
+model CartItem {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @db.DateTime(6)
+  quantity   Int
+  updated_at DateTime? @db.DateTime(6)
+  cart_id    BigInt
+  product_id BigInt
+  products   Product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK1re40cjegsfvw58xrkdp6bac6")
+  carts      Cart      @relation(fields: [cart_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKpcttvuq4mxppo8sxggjtn5i2c")
+
+  @@index([product_id], map: "FK1re40cjegsfvw58xrkdp6bac6")
+  @@index([cart_id], map: "FKpcttvuq4mxppo8sxggjtn5i2c")
+  @@map("cart_items")
+}
+
+model Wishlist {
+  id             BigInt         @id @default(autoincrement())
+  created_at     DateTime?      @db.DateTime(6)
+  updated_at     DateTime?      @db.DateTime(6)
+  user_id        BigInt         @unique(map: "UKobh8c909a28dx3aqh4cbdhh25")
+  wishlist_items WishlistItem[]
+  users          User           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK330pyw2el06fn5g28ypyljt16")
+
+  @@map("wishlists")
+}
+
+model WishlistItem {
+  id          BigInt    @id @default(autoincrement())
+  created_at  DateTime? @db.DateTime(6)
+  product_id  BigInt
+  wishlist_id BigInt
+  wishlists   Wishlist  @relation(fields: [wishlist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKkem9l8vd14pk3cc4elnpl0n00")
+  products    Product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKqxj7lncd242b59fb78rqegyxj")
+
+  @@index([wishlist_id], map: "FKkem9l8vd14pk3cc4elnpl0n00")
+  @@index([product_id], map: "FKqxj7lncd242b59fb78rqegyxj")
+  @@map("wishlist_items")
+}
+
+model Coupon {
+  id                  BigInt                @id @default(autoincrement())
+  active              Boolean               @db.Bit(1)
+  code                String                @unique(map: "UKeplt0kkm9yf2of2lnx6c1oy9b") @db.VarChar(50)
+  created_at          DateTime?             @db.DateTime(6)
+  description         String?               @db.Text
+  discount_type       coupons_discount_type
+  discount_value      Decimal               @db.Decimal(10, 2)
+  expiry_date         DateTime?             @db.DateTime(6)
+  max_discount_amount Decimal?              @db.Decimal(10, 2)
+  min_order_amount    Decimal?              @db.Decimal(10, 2)
+  per_user_limit      Int?
+  start_date          DateTime?             @db.DateTime(6)
+  updated_at          DateTime?             @db.DateTime(6)
+  usage_count         Int?
+  usage_limit         Int?
+  coupon_usages       CouponUsage[]
+
+  @@map("coupons")
+}
+
+model CouponUsage {
+  id        BigInt    @id @default(autoincrement())
+  used_at   DateTime? @db.DateTime(6)
+  coupon_id BigInt
+  order_id  BigInt    @unique(map: "UKgsn0fhgy76p51v5h30akhc063")
+  user_id   BigInt
+  coupons   Coupon    @relation(fields: [coupon_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK3mvslb8gc0ac6501mfmvifgva")
+  users     User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK6mev6grxbqmt8l0jxvobfg70n")
+  orders    Order     @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKs9yuckyrsqcsgmjsus1unapt4")
+
+  @@index([coupon_id], map: "FK3mvslb8gc0ac6501mfmvifgva")
+  @@index([user_id], map: "FK6mev6grxbqmt8l0jxvobfg70n")
+  @@map("coupon_usages")
+}
+
+model Order {
+  id                  BigInt        @id @default(autoincrement())
+  coupon_code         String?       @db.VarChar(255)
+  courier_name        String?       @db.VarChar(255)
+  created_at          DateTime?     @db.DateTime(6)
+  discount            Decimal       @db.Decimal(10, 2)
+  order_number        String        @unique(map: "UKnthkiu7pgmnqnu86i2jyoe2v7") @db.VarChar(64)
+  payment_method      String?       @db.VarChar(30)
+  payment_status      String?       @db.VarChar(30)
+  shipping_charge     Decimal       @db.Decimal(10, 2)
+  status              orders_status
+  subtotal            Decimal       @db.Decimal(10, 2)
+  total_amount        Decimal       @db.Decimal(10, 2)
+  tracking_number     String?       @db.VarChar(255)
+  updated_at          DateTime?     @db.DateTime(6)
+  shipping_address_id BigInt
+  user_id             BigInt
+  coupon_usages       CouponUsage?
+  order_items         OrderItem[]
+  users               User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK32ql8ubntj5uh44ph9659tiih")
+  addresses           Address       @relation(fields: [shipping_address_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKmk6q95x8ffidq82wlqjaq7sqc")
+  payments            payments?
+
+  @@index([user_id], map: "FK32ql8ubntj5uh44ph9659tiih")
+  @@index([shipping_address_id], map: "FKmk6q95x8ffidq82wlqjaq7sqc")
+  @@map("orders")
+}
+
+model OrderItem {
+  id           BigInt   @id @default(autoincrement())
+  discount     Decimal? @db.Decimal(10, 2)
+  image_url    String?  @db.VarChar(255)
+  price        Decimal  @db.Decimal(10, 2)
+  product_name String   @db.VarChar(255)
+  product_sku  String   @db.VarChar(50)
+  quantity     Int
+  total        Decimal  @db.Decimal(10, 2)
+  order_id     BigInt
+  product_id   BigInt?
+  orders       Order    @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKbioxgbv59vetrxe0ejfubep1w")
+  products     Product? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKocimc7dtr037rh4ls4l95nlfi")
+
+  @@index([order_id], map: "FKbioxgbv59vetrxe0ejfubep1w")
+  @@index([product_id], map: "FKocimc7dtr037rh4ls4l95nlfi")
+  @@map("order_items")
+}
+
+model Review {
+  id                BigInt        @id @default(autoincrement())
+  approved          Boolean       @db.Bit(1)
+  comment           String        @db.Text
+  created_at        DateTime?     @db.DateTime(6)
+  rating            Int
+  title             String?       @db.VarChar(150)
+  updated_at        DateTime?     @db.DateTime(6)
+  verified_purchase Boolean?      @db.Bit(1)
+  product_id        BigInt
+  user_id           BigInt
+  review_images     ReviewImage[]
+  users             User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKcgy7qjc1r99dp117y9en6lxye")
+  products          Product       @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKpl51cejpw4gy5swfar8br9ngi")
+
+  @@index([user_id], map: "FKcgy7qjc1r99dp117y9en6lxye")
+  @@index([product_id], map: "FKpl51cejpw4gy5swfar8br9ngi")
+  @@map("reviews")
+}
+
+model ReviewImage {
+  id        BigInt @id @default(autoincrement())
+  image_url String @db.VarChar(255)
+  review_id BigInt
+  reviews   Review @relation(fields: [review_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK3aayo5bjciyemf3bvvt987hkr")
+
+  @@index([review_id], map: "FK3aayo5bjciyemf3bvvt987hkr")
+  @@map("review_images")
+}
+
+model Banner {
+  id            BigInt    @id @default(autoincrement())
+  active        Boolean   @db.Bit(1)
+  created_at    DateTime? @db.DateTime(6)
+  cta_text      String?   @db.VarChar(50)
+  display_order Int?
+  image_url     String    @db.VarChar(255)
+  subtitle      String?   @db.VarChar(200)
+  target_url    String?   @db.VarChar(200)
+  title         String    @db.VarChar(100)
+
+  @@map("banners")
+}
+
+model inventory {
+  id                 BigInt    @id @default(autoincrement())
+  available_quantity Int
+  reserved_quantity  Int
+  sold_quantity      Int
+  updated_at         DateTime? @db.DateTime(6)
+  product_id         BigInt    @unique(map: "UKce3rbi3bfstbvvyne34c1dvyv")
+  products           Product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FKq2yge7ebtfuvwufr6lwfwqy9l")
+}
+
+model payments {
+  id                  BigInt                   @id @default(autoincrement())
+  amount              Decimal                  @db.Decimal(10, 2)
+  created_at          DateTime?                @db.DateTime(6)
+  currency            String                   @db.VarChar(10)
+  payment_method      payments_payment_method?
+  razorpay_order_id   String?                  @db.VarChar(100)
+  razorpay_payment_id String?                  @db.VarChar(100)
+  razorpay_signature  String?                  @db.VarChar(255)
+  status              payments_status
+  updated_at          DateTime?                @db.DateTime(6)
+  order_id            BigInt                   @unique(map: "UK8vo36cen604as7etdfwmyjsxt")
+  orders              Order                    @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK81gagumt0r8y3rmudcgpbk42l")
+}
+
+model system_metadata {
+  id         BigInt    @id @default(autoincrement())
+  version    String    @db.VarChar(50)
+  phase      String    @db.VarChar(50)
+  status     String    @db.VarChar(50)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+}
+
+enum RoleType {
+  ROLE_ADMIN
+  ROLE_CUSTOMER
+}
+
+enum addresses_address_type {
+  HOME
+  OFFICE
+  OTHER
+}
+
+enum payments_payment_method {
+  CARD
+  COD
+  NET_BANKING
+  RAZORPAY
+  UPI
+}
+
+enum coupons_discount_type {
+  FIXED
+  PERCENTAGE
+}
+
+enum payments_status {
+  FAILED
+  PENDING
+  REFUNDED
+  SUCCESS
+}
+
+enum orders_status {
+  CANCELLED
+  CONFIRMED
+  DELIVERED
+  OUT_FOR_DELIVERY
+  PACKED
+  PENDING
+  REFUNDED
+  RETURNED
+  RETURN_REQUESTED
+  SHIPPED
+}
