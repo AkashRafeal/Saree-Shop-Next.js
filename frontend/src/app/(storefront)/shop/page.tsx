@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { ShopPage } from '@/pages/public/ShopPage';
+import { ShopPage } from '@/views/public/ShopPage';
 
 export default function StorefrontShopPage() {
   return (

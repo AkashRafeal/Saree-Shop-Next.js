@@ -1,4 +1,4 @@
-import { AdminCategoriesPage } from '@/pages/admin/AdminCategoriesPage';
+import { AdminCategoriesPage } from '@/views/admin/AdminCategoriesPage';
 
 export default function AdminCategoriesRoutePage() {
   return <AdminCategoriesPage />;

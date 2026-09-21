@@ -1,4 +1,4 @@
-import { OrderDetailPage } from '@/pages/customer/OrderDetailPage';
+import { OrderDetailPage } from '@/views/customer/OrderDetailPage';
 
 export default function StorefrontOrderDetailPage() {
   return <OrderDetailPage />;

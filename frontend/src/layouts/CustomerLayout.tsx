@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
@@ -37,7 +37,9 @@ export const CustomerLayout: React.FC<CustomerLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-white text-stone-800 antialiased overflow-x-clip w-full">
       {/* Main Website Header */}
-      <Header />
+      <Suspense fallback={<div className="h-20 bg-white border-b border-stone-100" />}>
+        <Header />
+      </Suspense>
 
       {/* Main Content Area */}
       <main className="flex-1">

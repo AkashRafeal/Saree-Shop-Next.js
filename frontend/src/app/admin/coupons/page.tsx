@@ -1,4 +1,4 @@
-import { AdminCouponsPage } from '@/pages/admin/AdminCouponsPage';
+import { AdminCouponsPage } from '@/views/admin/AdminCouponsPage';
 
 export default function AdminCouponsRoutePage() {
   return <AdminCouponsPage />;

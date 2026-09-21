@@ -1,4 +1,4 @@
-import { AdminCustomersPage } from '@/pages/admin/AdminCustomersPage';
+import { AdminCustomersPage } from '@/views/admin/AdminCustomersPage';
 
 export default function AdminCustomersRoutePage() {
   return <AdminCustomersPage />;

@@ -1,4 +1,4 @@
-import { CartPage } from '@/pages/customer/CartPage';
+import { CartPage } from '@/views/customer/CartPage';
 
 export default function StorefrontCartPage() {
   return <CartPage />;

@@ -1,4 +1,4 @@
-import { AdminBannersPage } from '@/pages/admin/AdminBannersPage';
+import { AdminBannersPage } from '@/views/admin/AdminBannersPage';
 
 export default function AdminBannersRoutePage() {
   return <AdminBannersPage />;
