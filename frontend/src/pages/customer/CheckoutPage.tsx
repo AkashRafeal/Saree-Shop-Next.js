@@ -29,8 +29,8 @@ function CheckoutForm() {
   const [newState, setNewState] = useState('');
   const [newPostalCode, setNewPostalCode] = useState('');
 
-  const couponCode = searchParams.get('coupon') || '';
-  const couponDiscount = Number(searchParams.get('discount') || 0);
+  const couponCode = searchParams?.get('coupon') || '';
+  const couponDiscount = Number(searchParams?.get('discount') || 0);
 
   useEffect(() => {
     if (!isAuthenticated) {

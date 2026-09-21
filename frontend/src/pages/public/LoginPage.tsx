@@ -20,7 +20,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   // Return url if redirected from protected route
-  const from = searchParams.get('from') || '/';
+  const from = searchParams?.get('from') || '/';
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

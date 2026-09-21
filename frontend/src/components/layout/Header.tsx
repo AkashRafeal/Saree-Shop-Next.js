@@ -78,51 +78,52 @@ export const Header: React.FC = () => {
   ];
 
   const isLinkActive = (href: string) => {
+    const currentPath = pathname || '';
     const cat = searchParams?.get('category');
     const occ = searchParams?.get('occasion');
     const isSale = searchParams?.get('sale') === 'true';
 
     // 1. Home
     if (href === '/') {
-      return pathname === '/' && (!searchParams || searchParams.toString() === '');
+      return currentPath === '/' && (!searchParams || searchParams.toString() === '');
     }
 
     // 2. Reviews Page
     if (href === '/reviews') {
-      return pathname === '/reviews';
+      return currentPath === '/reviews';
     }
 
     // 3. New Arrivals
     if (href.includes('category=new-arrivals')) {
-      return pathname === '/shop' && cat === 'new-arrivals';
+      return currentPath === '/shop' && cat === 'new-arrivals';
     }
 
     // 4. Specific Categories
     if (href.includes('category=kanchipuram-silk')) {
-      return pathname === '/shop' && (cat === 'kanchipuram-silk' || cat === 'silk-sarees');
+      return currentPath === '/shop' && (cat === 'kanchipuram-silk' || cat === 'silk-sarees');
     }
     if (href.includes('category=banarasi-silk')) {
-      return pathname === '/shop' && (cat === 'banarasi-silk' || cat === 'banarasi');
+      return currentPath === '/shop' && (cat === 'banarasi-silk' || cat === 'banarasi');
     }
     if (href.includes('category=bridal-sarees')) {
-      return pathname === '/shop' && (cat === 'bridal-sarees' || cat === 'wedding' || occ === 'Bridal' || occ === 'Wedding');
+      return currentPath === '/shop' && (cat === 'bridal-sarees' || cat === 'wedding' || occ === 'Bridal' || occ === 'Wedding');
     }
     if (href.includes('category=cotton-linen')) {
-      return pathname === '/shop' && (cat === 'cotton-linen' || cat === 'cotton');
+      return currentPath === '/shop' && (cat === 'cotton-linen' || cat === 'cotton');
     }
 
     // 5. Sale / Offers
     if (href.includes('sale=true')) {
-      return pathname === '/shop' && isSale;
+      return currentPath === '/shop' && isSale;
     }
 
     // 6. All Sarees / Shop catalog
     if (href === '/shop') {
-      return pathname === '/shop' && !cat && !isSale;
+      return currentPath === '/shop' && !cat && !isSale;
     }
 
     const currentSearch = searchParams?.toString();
-    const currentFull = currentSearch ? `${pathname}?${currentSearch}` : pathname;
+    const currentFull = currentSearch ? `${currentPath}?${currentSearch}` : currentPath;
     return currentFull === href;
   };
 

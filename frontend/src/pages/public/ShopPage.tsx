@@ -110,13 +110,13 @@ export const ShopPage: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Search, category, sort, sale & price params
-  const search = searchParams.get('search') || '';
-  const categorySlug = searchParams.get('category') || '';
-  const isSale = searchParams.get('sale') === 'true';
-  const sort = searchParams.get('sort') || 'newest';
-  const page = parseInt(searchParams.get('page') || '0', 10);
-  const minPrice = searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : undefined;
-  const maxPrice = searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined;
+  const search = searchParams?.get('search') || '';
+  const categorySlug = searchParams?.get('category') || '';
+  const isSale = searchParams?.get('sale') === 'true';
+  const sort = searchParams?.get('sort') || 'newest';
+  const page = parseInt(searchParams?.get('page') || '0', 10);
+  const minPrice = searchParams?.get('minPrice') ? Number(searchParams?.get('minPrice')) : undefined;
+  const maxPrice = searchParams?.get('maxPrice') ? Number(searchParams?.get('maxPrice')) : undefined;
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -184,7 +184,7 @@ export const ShopPage: React.FC = () => {
     let selectedFabric = '';
     let selectedOccasion = '';
 
-    const isNewArrivalCategory = categorySlug === 'new-arrivals' || searchParams.get('category') === 'new-arrivals';
+    const isNewArrivalCategory = categorySlug === 'new-arrivals' || searchParams?.get('category') === 'new-arrivals';
 
     if (categorySlug && !isNewArrivalCategory) {
       const meta = CATEGORY_DIRECTORY[categorySlug];
@@ -213,8 +213,8 @@ export const ShopPage: React.FC = () => {
     if (isSale) {
       params.onSale = true;
     }
-    const minPriceParam = searchParams.get('minPrice');
-    const maxPriceParam = searchParams.get('maxPrice');
+    const minPriceParam = searchParams?.get('minPrice');
+    const maxPriceParam = searchParams?.get('maxPrice');
     if (minPriceParam) params.minPrice = minPriceParam;
     if (maxPriceParam) params.maxPrice = maxPriceParam;
 
@@ -313,7 +313,7 @@ export const ShopPage: React.FC = () => {
   }, [categories, search, categorySlug, sort, page, isSale, searchParams]);
 
   const updateParam = (key: string, value: string) => {
-    const newParams = new URLSearchParams(searchParams);
+    const newParams = new URLSearchParams(searchParams?.toString() || '');
     if (value) {
       newParams.set(key, value);
     } else {
@@ -324,7 +324,7 @@ export const ShopPage: React.FC = () => {
   };
 
   const handlePriceApply = (newMin: number, newMax: number) => {
-    const newParams = new URLSearchParams(searchParams);
+    const newParams = new URLSearchParams(searchParams?.toString() || '');
     if (newMin > 400) {
       newParams.set('minPrice', newMin.toString());
     } else {
@@ -341,7 +341,7 @@ export const ShopPage: React.FC = () => {
   };
 
   const handlePriceReset = () => {
-    const newParams = new URLSearchParams(searchParams);
+    const newParams = new URLSearchParams(searchParams?.toString() || '');
     newParams.delete('minPrice');
     newParams.delete('maxPrice');
     newParams.set('page', '0');

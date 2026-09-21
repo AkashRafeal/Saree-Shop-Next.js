@@ -74,7 +74,7 @@ export const MobileBottomNav: React.FC = () => {
         {navItems.map((item) => {
           const isActive = item.exact
             ? pathname === item.to
-            : pathname.startsWith(item.to);
+            : Boolean(pathname && pathname.startsWith(item.to));
 
           const IconComponent = item.icon;
 

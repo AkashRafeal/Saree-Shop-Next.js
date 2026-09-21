@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/P_CpNKtjtUfFGCKaOt5L3/_buildManifest.js",
-    "static/P_CpNKtjtUfFGCKaOt5L3/_ssgManifest.js"
+    "static/mSLWU1z0qFAUNliOrboVV/_buildManifest.js",
+    "static/mSLWU1z0qFAUNliOrboVV/_ssgManifest.js"
   ],
   "rootMainFiles": [
     "static/chunks/webpack-4d7dca4876ae3aac.js",
@@ -118,7 +118,7 @@
       "static/chunks/5048-de87cd3e49da913d.js",
       "static/chunks/1664-ce59ef39b85ad69c.js",
       "static/chunks/9332-0e0af68510f2334e.js",
-      "static/chunks/pages/customer/CheckoutPage-d2e6fb11da26d0c7.js"
+      "static/chunks/pages/customer/CheckoutPage-11717a9e3ced4e01.js"
     ],
     "/customer/MyOrdersPage": [
       "static/chunks/webpack-4d7dca4876ae3aac.js",
@@ -166,7 +166,7 @@
       "static/chunks/5048-de87cd3e49da913d.js",
       "static/chunks/1664-ce59ef39b85ad69c.js",
       "static/chunks/9332-0e0af68510f2334e.js",
-      "static/chunks/pages/public/LoginPage-00c63a1969398b63.js"
+      "static/chunks/pages/public/LoginPage-d74a79c857a1ebeb.js"
     ],
     "/public/ProductDetailPage": [
       "static/chunks/webpack-4d7dca4876ae3aac.js",
@@ -201,7 +201,7 @@
       "static/chunks/5048-de87cd3e49da913d.js",
       "static/chunks/1664-ce59ef39b85ad69c.js",
       "static/chunks/9332-0e0af68510f2334e.js",
-      "static/chunks/pages/public/ShopPage-f86a6ada580d6875.js"
+      "static/chunks/pages/public/ShopPage-6716b71cd8f89522.js"
     ]
   },
   "ampFirstPages": []

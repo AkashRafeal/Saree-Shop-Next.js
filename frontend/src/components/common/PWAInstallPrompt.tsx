@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Download, X } from 'lucide-react';
 import logoImg from '@/assets/logo.png';
@@ -47,7 +49,7 @@ export const PWAInstallPrompt: React.FC = () => {
     <div className="fixed top-16 left-4 right-4 z-50 max-w-md mx-auto bg-[#062E28]/95 backdrop-blur-md text-white rounded-2xl p-3.5 shadow-2xl border border-[#D4AF37]/30 flex items-center justify-between gap-3 animate-fadeIn">
       <div className="flex items-center gap-3">
         <img
-          src={logoImg}
+          src={typeof logoImg === 'string' ? logoImg : (logoImg as any)?.src || '/logo.png'}
           onError={(e) => {
             const target = e.currentTarget;
             if (target.src !== '/logo.png') {

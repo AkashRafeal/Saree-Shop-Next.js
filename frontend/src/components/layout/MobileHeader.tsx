@@ -15,20 +15,21 @@ export const MobileHeader: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const isHome = pathname === '/';
+  const currentPath = pathname || '';
+  const isHome = currentPath === '/';
 
   // Determine subpage title
   const getPageTitle = () => {
-    if (pathname.startsWith('/product/')) return 'Product Details';
-    if (pathname === '/cart') return 'Shopping Bag';
-    if (pathname === '/wishlist') return 'My Wishlist';
-    if (pathname === '/checkout') return 'Checkout';
-    if (pathname.startsWith('/my-orders/')) return 'Order Details';
-    if (pathname === '/my-orders') return 'My Orders';
-    if (pathname === '/shop') return 'Saree Collection';
-    if (pathname === '/reviews') return 'Client Reviews';
-    if (pathname === '/login') return 'Welcome Back';
-    if (pathname === '/register') return 'Create Account';
+    if (currentPath.startsWith('/product/')) return 'Product Details';
+    if (currentPath === '/cart') return 'Shopping Bag';
+    if (currentPath === '/wishlist') return 'My Wishlist';
+    if (currentPath === '/checkout') return 'Checkout';
+    if (currentPath.startsWith('/my-orders/')) return 'Order Details';
+    if (currentPath === '/my-orders') return 'My Orders';
+    if (currentPath === '/shop') return 'Saree Collection';
+    if (currentPath === '/reviews') return 'Client Reviews';
+    if (currentPath === '/login') return 'Welcome Back';
+    if (currentPath === '/register') return 'Create Account';
     return '';
   };
 
