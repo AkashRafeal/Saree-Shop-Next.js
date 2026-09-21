@@ -1,10 +1,10 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 const getApiBaseUrl = (): string => {
-  if (import.meta.env.VITE_API_BASE_URL) {
-    return import.meta.env.VITE_API_BASE_URL;
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || '/api';
   }
-  return '/api';
+  return process.env.BACKEND_URL ? `${process.env.BACKEND_URL}/api` : 'http://localhost:8080/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
@@ -20,9 +20,11 @@ export const api = axios.create({
 // Request interceptor for attaching JWT Bearer token
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('sareeaura_token');
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('sareeaura_token');
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -34,9 +36,10 @@ api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('sareeaura_token');
-      localStorage.removeItem('sareeaura_user');
-      // Optional redirect or dispatch
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('sareeaura_token');
+        localStorage.removeItem('sareeaura_user');
+      }
     }
     return Promise.reject(error);
   }

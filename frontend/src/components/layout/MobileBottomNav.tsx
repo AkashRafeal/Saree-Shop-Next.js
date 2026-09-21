@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Home, Compass, Heart, ShoppingBag, User } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { useBadgeStore } from '@/store/badgeStore';
@@ -7,11 +10,11 @@ import { useBadgeStore } from '@/store/badgeStore';
 export const MobileBottomNav: React.FC = () => {
   const { isAuthenticated } = useAuthStore();
   const { cartCount, wishlistCount, fetchCounts } = useBadgeStore();
-  const location = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     fetchCounts();
-  }, [location.pathname, isAuthenticated, fetchCounts]);
+  }, [pathname, isAuthenticated, fetchCounts]);
 
   const navItems = [
     {
@@ -70,15 +73,15 @@ export const MobileBottomNav: React.FC = () => {
       <div className="grid grid-cols-5 items-center h-14 max-w-lg mx-auto px-2">
         {navItems.map((item) => {
           const isActive = item.exact
-            ? location.pathname === item.to
-            : location.pathname.startsWith(item.to);
+            ? pathname === item.to
+            : pathname.startsWith(item.to);
 
           const IconComponent = item.icon;
 
           return (
-            <NavLink
+            <Link
               key={item.label}
-              to={item.to}
+              href={item.to}
               onClick={triggerHaptic}
               className={`relative flex flex-col items-center justify-center py-1 group select-none transition-colors duration-200 ${
                 isActive ? 'text-[#0A4D40]' : 'text-stone-500 hover:text-stone-800'
@@ -111,7 +114,7 @@ export const MobileBottomNav: React.FC = () => {
               {isActive && (
                 <span className="absolute -bottom-1 w-6 h-0.5 bg-[#D4AF37] rounded-full shadow-xs shadow-[#D4AF37]/50 animate-fadeIn" />
               )}
-            </NavLink>
+            </Link>
           );
         })}
       </div>

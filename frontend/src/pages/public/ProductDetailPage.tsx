@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Star, ShoppingBag, ShieldCheck, Award, Truck, Check, Sparkles, Share2, ArrowRight } from 'lucide-react';
 import { Product, Review } from '@/types';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -10,8 +13,9 @@ import api from '@/services/api';
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80';
 
 export const ProductDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const params = useParams();
+  const id = params?.id as string;
+  const router = useRouter();
   const { isAuthenticated } = useAuthStore();
 
   const [product, setProduct] = useState<Product | null>(null);
@@ -56,14 +60,14 @@ export const ProductDetailPage: React.FC = () => {
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
     if (!product) return;
     setAdding(true);
     try {
       await api.post('/cart/items', { productId: product.id, quantity });
-      navigate('/cart');
+      router.push('/cart');
     } catch (err) {
       console.error('Add to cart error:', err);
     } finally {
@@ -82,7 +86,7 @@ export const ProductDetailPage: React.FC = () => {
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
     setSubmittingReview(true);
@@ -126,7 +130,7 @@ export const ProductDetailPage: React.FC = () => {
         <h2 className="font-serif text-3xl font-bold text-stone-900">Creation Not Found</h2>
         <p className="text-stone-500 text-xs sm:text-sm">The selected saree drape may have been archived or unlisted.</p>
         <Link
-          to="/shop"
+          href="/shop"
           className="inline-flex items-center gap-2 bg-[#0A4D40] text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full hover:bg-[#062E28] transition shadow-md"
         >
           <span>Return to All Sarees</span>
@@ -483,7 +487,7 @@ export const ProductDetailPage: React.FC = () => {
               </h2>
             </div>
             <Link
-              to="/shop"
+              href="/shop"
               className="text-xs font-semibold text-[#0A4D40] hover:text-[#062E28] flex items-center gap-1 transition"
             >
               <span>View All</span>

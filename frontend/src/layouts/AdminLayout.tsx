@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, 
   Package, 
@@ -19,12 +22,20 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 
-export const AdminLayout: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+interface AdminLayoutProps {
+  children?: React.ReactNode;
+}
+
+export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout, hydrate } = useAuthStore();
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -40,7 +51,7 @@ export const AdminLayout: React.FC = () => {
   const handleLogout = () => {
     setIsProfileDropdownOpen(false);
     logout();
-    navigate('/login');
+    router.push('/login');
   };
 
   const displayName = user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : 'Administrator';
@@ -64,12 +75,14 @@ export const AdminLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex bg-[#FAF8F5] text-stone-800 font-sans">
       {/* Sidebar */}
-      <aside className="w-64 bg-stone-950 text-stone-200 flex flex-col border-r border-stone-800/80 shadow-xl">
+      <aside className="w-64 bg-stone-950 text-stone-200 flex flex-col border-r border-stone-800/80 shadow-xl shrink-0">
         <div className="h-20 flex items-center px-6 border-b border-stone-800/80 bg-stone-950/90 backdrop-blur-sm">
           <Link
-            to="/admin"
+            href="/admin"
             onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              if (typeof window !== 'undefined') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
             }}
             aria-label="Return to Admin Dashboard"
             className="flex items-center gap-2.5 group cursor-pointer select-none no-underline hover:no-underline border-none bg-transparent outline-none focus:outline-none focus-visible:outline-none transition-opacity duration-200 hover:opacity-90"
@@ -92,12 +105,12 @@ export const AdminLayout: React.FC = () => {
 
         <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
           {navigation.map((item) => {
-            const isActive = location.pathname === item.href;
+            const isActive = pathname === item.href;
             const Icon = item.icon;
             return (
               <Link
                 key={item.name}
-                to={item.href}
+                href={item.href}
                 className={`flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 ${
                   isActive
                     ? 'bg-gradient-to-r from-[#0A4D40] to-[#062E28] text-[#D4AF37] font-bold shadow-lg shadow-[#062E28]/40 scale-[1.02] border border-[#D4AF37]/30'
@@ -117,7 +130,7 @@ export const AdminLayout: React.FC = () => {
         <header className="h-16 bg-white border-b border-stone-200/80 px-8 flex items-center justify-between shadow-xs sticky top-0 z-30">
           <div className="flex items-center gap-3">
             <Link
-              to="/admin"
+              href="/admin"
               className="font-serif text-lg font-bold text-stone-900 tracking-tight no-underline hover:text-[#0A4D40] transition-colors cursor-pointer"
             >
               NiVi Couture Administration
@@ -136,7 +149,7 @@ export const AdminLayout: React.FC = () => {
             </span>
 
             <Link
-              to="/"
+              href="/"
               target="_blank"
               className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-stone-700 hover:text-[#0A4D40] bg-stone-100 hover:bg-[#FFF0F5] border border-stone-200/80 hover:border-[#0A4D40]/30 rounded-full transition-all duration-200 shadow-xs group"
               title="Open customer storefront in a new tab"
@@ -193,7 +206,7 @@ export const AdminLayout: React.FC = () => {
                   {/* Actions */}
                   <div className="py-1">
                     <Link
-                      to="/admin/settings"
+                      href="/admin/settings"
                       onClick={() => setIsProfileDropdownOpen(false)}
                       className="flex items-center px-4 py-2 text-xs font-medium text-stone-700 hover:bg-[#FAF8F5] hover:text-[#0A4D40] transition gap-2.5"
                     >
@@ -201,7 +214,7 @@ export const AdminLayout: React.FC = () => {
                       <span>Admin Settings</span>
                     </Link>
                     <Link
-                      to="/"
+                      href="/"
                       target="_blank"
                       onClick={() => setIsProfileDropdownOpen(false)}
                       className="flex items-center px-4 py-2 text-xs font-medium text-stone-700 hover:bg-[#FAF8F5] hover:text-[#0A4D40] transition gap-2.5"
@@ -231,7 +244,7 @@ export const AdminLayout: React.FC = () => {
         </header>
 
         <main className="flex-1 p-8 overflow-y-auto">
-          <Outlet />
+          {children}
         </main>
       </div>
     </div>

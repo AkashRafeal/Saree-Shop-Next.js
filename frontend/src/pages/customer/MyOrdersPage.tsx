@@ -1,12 +1,15 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Package, Clock, ChevronRight, ShoppingBag, Truck, CheckCircle2, XCircle } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
 
 export const MyOrdersPage: React.FC = () => {
   const { isAuthenticated } = useAuthStore();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -14,12 +17,12 @@ export const MyOrdersPage: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login?redirect=/my-orders');
+      router.push('/login?from=/my-orders');
       return;
     }
 
     fetchOrders();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -85,7 +88,7 @@ export const MyOrdersPage: React.FC = () => {
 
         {loading ? (
           <div className="py-20 text-center">
-            <div className="w-12 h-12 border-4 border-brand-maroon border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-12 h-12 border-4 border-[#0A4D40] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-stone-500 font-serif text-sm">Retrieving your bespoke orders...</p>
           </div>
         ) : error ? (
@@ -100,7 +103,7 @@ export const MyOrdersPage: React.FC = () => {
           </div>
         ) : orders.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-stone-200 p-8 shadow-sm">
-            <div className="w-16 h-16 bg-brand-cream rounded-full flex items-center justify-center mx-auto mb-4 text-[#0A4D40]">
+            <div className="w-16 h-16 bg-[#FAF8F5] rounded-full flex items-center justify-center mx-auto mb-4 text-[#0A4D40]">
               <ShoppingBag className="w-8 h-8" />
             </div>
             <h3 className="font-serif text-xl font-bold text-stone-800">No Orders Yet</h3>
@@ -108,7 +111,7 @@ export const MyOrdersPage: React.FC = () => {
               You haven't placed any luxury saree orders yet. Discover our latest Kanchipuram and Banarasi collection!
             </p>
             <Link
-              to="/shop"
+              href="/shop"
               className="mt-6 inline-flex items-center px-7 py-3 rounded-full bg-[#0A4D40] hover:bg-[#062E28] text-white text-xs font-semibold uppercase tracking-wider transition shadow-md shadow-[#0A4D40]/20 cursor-pointer"
             >
               <span>Explore Collection</span>
@@ -149,7 +152,7 @@ export const MyOrdersPage: React.FC = () => {
                       <span className="text-[10px] uppercase font-bold tracking-wider text-stone-400 block">
                         Total Amount
                       </span>
-                      <span className="text-sm font-bold text-brand-maroon">
+                      <span className="text-sm font-bold text-[#0A4D40]">
                         ₹{Number(order.totalAmount).toLocaleString('en-IN')}
                       </span>
                     </div>
@@ -158,8 +161,8 @@ export const MyOrdersPage: React.FC = () => {
                   <div className="flex items-center space-x-3">
                     {getStatusBadge(order.status)}
                     <Link
-                      to={`/my-orders/${order.id}`}
-                      className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold text-[#0A4D40] bg-rose-50 hover:bg-rose-100/80 transition cursor-pointer"
+                      href={`/my-orders/${order.id}`}
+                      className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold text-[#0A4D40] bg-emerald-50 hover:bg-emerald-100/80 transition cursor-pointer"
                     >
                       <span>Track Details</span>
                       <ChevronRight className="w-3.5 h-3.5 ml-1" />

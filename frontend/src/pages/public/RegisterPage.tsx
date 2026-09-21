@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Mail, Lock, User, Phone, ArrowRight, AlertCircle, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
@@ -7,7 +10,7 @@ import { validateGmail, validatePhone10 } from '@/utils/validation';
 import logoImg from '@/assets/logo.png';
 
 export const RegisterPage: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { login } = useAuthStore();
 
   const [formData, setFormData] = useState({
@@ -75,7 +78,7 @@ export const RegisterPage: React.FC = () => {
 
       const { token, user } = response.data.data;
       login(user, token);
-      navigate('/');
+      router.push('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Email may already be registered.');
     } finally {
@@ -86,9 +89,9 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#FAF8F5] flex flex-col justify-start sm:justify-center pt-4 pb-12 sm:py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center flex flex-col items-center mt-2 sm:mt-0">
-        <Link to="/" className="inline-flex items-center gap-2.5 mb-3 group">
+        <Link href="/" className="inline-flex items-center gap-2.5 mb-3 group">
           <img
-            src={logoImg}
+            src={typeof logoImg === 'string' ? logoImg : (logoImg as any)?.src || '/logo.png'}
             onError={(e) => {
               const target = e.currentTarget;
               if (target.src !== '/logo.png') {
@@ -303,7 +306,7 @@ export const RegisterPage: React.FC = () => {
           <div className="mt-8 pt-6 border-t border-stone-100 text-center">
             <p className="text-xs text-stone-500">
               Already have an account?{' '}
-              <Link to="/login" className="font-semibold text-[#0A4D40] hover:underline ml-1">
+              <Link href="/login" className="font-semibold text-[#0A4D40] hover:underline ml-1">
                 Sign In
               </Link>
             </p>

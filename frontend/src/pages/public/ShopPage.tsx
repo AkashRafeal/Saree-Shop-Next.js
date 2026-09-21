@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { ChevronLeft, ChevronRight, Sparkles, ChevronDown, Check, SlidersHorizontal } from 'lucide-react';
 import { Product, Category } from '@/types';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -89,7 +91,13 @@ const SORT_OPTIONS = [
 ];
 
 export const ShopPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const setSearchParams = (newParams: URLSearchParams) => {
+    router.push(`${pathname}?${newParams.toString()}`);
+  };
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);

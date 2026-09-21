@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
   Star,
   CheckCircle2,
@@ -640,7 +642,7 @@ export const ReviewsPage: React.FC = () => {
                         <span className="text-[10px] text-stone-400 uppercase tracking-wider block">Draped Piece</span>
                         {rev.sareeId ? (
                           <Link
-                            to={`/product/${rev.sareeId}`}
+                            href={`/product/${rev.sareeId}`}
                             className="text-xs font-semibold text-stone-800 hover:text-[#0A4D40] truncate block transition"
                           >
                             {rev.sareeName}

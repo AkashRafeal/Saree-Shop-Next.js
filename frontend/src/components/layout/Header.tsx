@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { 
   ShoppingBag, 
   Heart, 
@@ -19,9 +22,10 @@ import api from '@/services/api';
 import logoImg from '@/assets/logo.png';
 
 export const Header: React.FC = () => {
-  const { user, isAuthenticated, logout } = useAuthStore();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { user, isAuthenticated, logout, hydrate } = useAuthStore();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -29,6 +33,10 @@ export const Header: React.FC = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
 
   // Fetch cart & wishlist count
   useEffect(() => {
@@ -48,7 +56,7 @@ export const Header: React.FC = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
       setMobileSearchOpen(false);
       setMobileMenuOpen(false);
@@ -70,16 +78,13 @@ export const Header: React.FC = () => {
   ];
 
   const isLinkActive = (href: string) => {
-    const pathname = location.pathname;
-    const search = location.search;
-    const params = new URLSearchParams(search);
-    const cat = params.get('category');
-    const occ = params.get('occasion');
-    const isSale = params.get('sale') === 'true';
+    const cat = searchParams?.get('category');
+    const occ = searchParams?.get('occasion');
+    const isSale = searchParams?.get('sale') === 'true';
 
     // 1. Home
     if (href === '/') {
-      return pathname === '/' && (!search || search === '');
+      return pathname === '/' && (!searchParams || searchParams.toString() === '');
     }
 
     // 2. Reviews Page
@@ -116,7 +121,9 @@ export const Header: React.FC = () => {
       return pathname === '/shop' && !cat && !isSale;
     }
 
-    return (pathname + search) === href;
+    const currentSearch = searchParams?.toString();
+    const currentFull = currentSearch ? `${pathname}?${currentSearch}` : pathname;
+    return currentFull === href;
   };
 
   return (
@@ -150,17 +157,19 @@ export const Header: React.FC = () => {
 
             {/* Brand Logo - NiVi Couture */}
             <Link
-              to="/"
+              href="/"
               onClick={() => {
                 setMobileMenuOpen(false);
                 setMobileSearchOpen(false);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (typeof window !== 'undefined') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
               }}
               aria-label="NiVi Couture Home"
               className="flex items-center gap-2 sm:gap-3 shrink-0 cursor-pointer select-none no-underline hover:no-underline border-none bg-transparent outline-none focus:outline-none focus-visible:outline-none transition-opacity duration-200 hover:opacity-95 group min-w-0"
             >
               <img
-                src={logoImg}
+                src={typeof logoImg === 'string' ? logoImg : (logoImg as any)?.src || '/logo.png'}
                 onError={(e) => {
                   const target = e.currentTarget;
                   if (target.src !== '/logo.png') {
@@ -216,7 +225,7 @@ export const Header: React.FC = () => {
 
               {/* Wishlist */}
               <Link
-                to="/wishlist"
+                href="/wishlist"
                 aria-label="Wishlist"
                 className="p-1.5 text-stone-700 hover:text-[#0A4D40] hover:bg-stone-100 rounded-full transition-colors relative focus:outline-none"
               >
@@ -230,7 +239,7 @@ export const Header: React.FC = () => {
 
               {/* Shopping Bag */}
               <Link
-                to="/cart"
+                href="/cart"
                 aria-label="Cart"
                 className="p-1.5 text-stone-700 hover:text-[#0A4D40] hover:bg-stone-100 rounded-full transition-colors relative focus:outline-none"
               >
@@ -277,7 +286,7 @@ export const Header: React.FC = () => {
 
                         <div className="py-1 text-xs">
                           <Link
-                            to="/my-orders"
+                            href="/my-orders"
                             onClick={() => setUserDropdownOpen(false)}
                             className="flex items-center px-4 py-2 text-stone-700 hover:bg-stone-50 hover:text-[#0A4D40]"
                           >
@@ -286,7 +295,7 @@ export const Header: React.FC = () => {
                           </Link>
                           {isAdmin && (
                             <Link
-                              to="/admin"
+                              href="/admin"
                               onClick={() => setUserDropdownOpen(false)}
                               className="flex items-center px-4 py-2 text-[#0A4D40] font-semibold hover:bg-stone-50"
                             >
@@ -301,7 +310,7 @@ export const Header: React.FC = () => {
                             onClick={() => {
                               logout();
                               setUserDropdownOpen(false);
-                              navigate('/login');
+                              router.push('/login');
                             }}
                             className="w-full flex items-center px-4 py-2 text-xs text-red-600 hover:bg-red-50 text-left"
                           >
@@ -314,7 +323,7 @@ export const Header: React.FC = () => {
                   </div>
                 ) : (
                   <Link
-                    to="/login"
+                    href="/login"
                     className="p-1.5 text-stone-700 hover:text-[#0A4D40] hover:bg-stone-100 rounded-full transition-colors flex items-center justify-center focus:outline-none"
                     aria-label="Login"
                   >
@@ -355,7 +364,7 @@ export const Header: React.FC = () => {
               return (
                 <Link
                   key={item.name}
-                  to={item.href}
+                  href={item.href}
                   className={`relative transition-all uppercase py-1.5 outline-none focus:outline-none focus-visible:outline-none focus:ring-0 select-none ${
                     active
                       ? 'text-[#0A4D40] font-bold'
@@ -392,10 +401,12 @@ export const Header: React.FC = () => {
                 return (
                   <Link
                     key={link.name}
-                    to={link.href}
+                    href={link.href}
                     onClick={() => {
                       setMobileMenuOpen(false);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      if (typeof window !== 'undefined') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
                     }}
                     className={`flex items-center justify-between py-2.5 px-3 rounded-lg text-xs font-semibold tracking-wider transition outline-none focus:outline-none focus-visible:outline-none focus:ring-0 select-none ${
                       active
@@ -416,7 +427,7 @@ export const Header: React.FC = () => {
             {/* Quick Customer Links on Mobile */}
             <div className="pt-3 border-t border-stone-100 space-y-1">
               <Link
-                to="/my-orders"
+                href="/my-orders"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center justify-between py-2 px-3 rounded-lg text-xs font-medium text-stone-700 hover:bg-stone-50"
               >
@@ -426,7 +437,7 @@ export const Header: React.FC = () => {
                 </div>
               </Link>
               <Link
-                to="/wishlist"
+                href="/wishlist"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center justify-between py-2 px-3 rounded-lg text-xs font-medium text-stone-700 hover:bg-stone-50"
               >
@@ -437,7 +448,7 @@ export const Header: React.FC = () => {
               </Link>
               {isAdmin && (
                 <Link
-                  to="/admin"
+                  href="/admin"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2 py-2 px-3 rounded-lg text-xs font-bold text-[#0A4D40] bg-[#0A4D40]/5"
                 >
@@ -451,14 +462,14 @@ export const Header: React.FC = () => {
             {!isAuthenticated && (
               <div className="pt-2 border-t border-stone-100 flex gap-2">
                 <Link
-                  to="/login"
+                  href="/login"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex-1 py-2 text-center text-xs font-bold bg-[#0A4D40] text-[#D4AF37] rounded-lg shadow-xs"
                 >
                   Sign In
                 </Link>
                 <Link
-                  to="/register"
+                  href="/register"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex-1 py-2 text-center text-xs font-bold border border-stone-300 text-stone-800 rounded-lg hover:bg-stone-50"
                 >

@@ -1,27 +1,15 @@
 # SareeAura | Luxury Indian Saree E-Commerce Platform
 
-SareeAura is a luxury Indian fashion and saree e-commerce platform built using a **Modular Monolith** architecture with Spring Boot 3 (Java 21), React (TypeScript, Vite, Tailwind CSS), and MySQL 8.
+SareeAura is a luxury Indian fashion and saree e-commerce platform built using a **Modular Monolith** architecture with Next.js 14 (App Router, TypeScript, Tailwind CSS), Spring Boot 3 (Java 21), and MySQL 8.
 
 ---
 
 ## Architecture Overview
-- **Frontend**: React 18/19, TypeScript, Vite, Tailwind CSS, TanStack Query, Zustand, React Router, Lucide React, Framer Motion, Recharts.
-- **Backend**: Java 21, Spring Boot 3.3.3, Spring Data JPA, Hibernate, Spring Security, JWT, Lombok, Swagger/OpenAPI.
+- **Frontend**: Next.js 14 App Router, React 18, TypeScript, Tailwind CSS, TanStack Query, Zustand, Lucide React, Framer Motion, Recharts, GSAP.
+- **Backend**: Java 21, Spring Boot 3.3.3, Spring Data JPA, Hibernate, Spring Security 6, JWT, Lombok, Swagger/OpenAPI.
 - **Database**: MySQL 8.0 with transactional guarantees and audit trails.
-- **Payment**: Razorpay (Test Mode).
-- **Media**: Cloudinary (Image URLs persisted in MySQL).
-
----
-
-## Phase 1 Status: Project Setup & Foundation
-- [x] Project structure initialization (Frontend & Backend)
-- [x] Modular Monolith backend structure (`com.sareeaura.*`)
-- [x] Spring Boot 3.3.3 configuration with Java 21
-- [x] Spring Security 6, JWT, and Swagger OpenAPI integration
-- [x] React + Vite + TypeScript + Tailwind CSS configuration
-- [x] Centralized Axios API client with interceptors
-- [x] MySQL 8 database connection and verification
-- [x] Root configuration (`.env.example`, `.gitignore`, `docker-compose.yml`)
+- **Payment**: Razorpay (Test Mode & Sandbox).
+- **Media**: Cloudinary & Local Static Uploads.
 
 ---
 
@@ -47,10 +35,11 @@ mvn clean spring-boot:run
 - Swagger UI Documentation: `http://localhost:8080/swagger-ui.html`
 - Health Check: `http://localhost:8080/api/health`
 
-### 3. Frontend Setup
+### 3. Frontend Setup (Next.js)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-- Web Application: `http://localhost:5173`
+- Web Application: `http://localhost:3000`
+- Production Build: `npm run build && npm run start`

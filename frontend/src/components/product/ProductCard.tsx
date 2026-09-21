@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Heart, ShoppingBag, Star } from 'lucide-react';
 import { Product } from '@/types';
 import { useAuthStore } from '@/store/authStore';
@@ -18,7 +21,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onWishlistToggle,
   isWishlisted = false,
 }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const [wishlistActive, setWishlistActive] = useState(isWishlisted);
   const [adding, setAdding] = useState(false);
@@ -27,7 +30,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (!isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
     setWishlistActive(!wishlistActive);
@@ -43,7 +46,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (!isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
     setAdding(true);
@@ -61,7 +64,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div className="group relative bg-white flex flex-col transition-all duration-300">
       {/* Product Image Container */}
       <Link
-        to={`/product/${product.id}`}
+        href={`/product/${product.id}`}
         className="block relative aspect-[3/4] overflow-hidden bg-stone-100 rounded-lg shadow-sm"
       >
         <img
@@ -118,7 +121,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           NIVI COUTURE
         </span>
 
-        <Link to={`/product/${product.id}`}>
+        <Link href={`/product/${product.id}`}>
           <h3 className="text-xs sm:text-sm font-medium text-stone-800 line-clamp-1 group-hover:text-[#0A4D40] transition-colors">
             {product.name}
           </h3>

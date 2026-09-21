@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { 
   TrendingUp, 
   ShoppingCart, 
@@ -336,7 +338,7 @@ export const AdminDashboardPage: React.FC = () => {
             <p className="text-xs text-stone-500">Live order management stream</p>
           </div>
           <Link
-            to="/admin/orders"
+            href="/admin/orders"
             className="text-xs font-bold text-[#0A4D40] hover:text-[#062E28] inline-flex items-center gap-1 transition"
           >
             <span>View All Orders</span>
@@ -381,7 +383,7 @@ export const AdminDashboardPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4 text-right">
                       <Link
-                        to="/admin/orders"
+                        href="/admin/orders"
                         className="text-xs font-bold text-[#0A4D40] hover:underline"
                       >
                         Manage

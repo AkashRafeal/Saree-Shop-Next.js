@@ -1,9 +1,11 @@
+'use client';
+
 import React, { useState } from 'react';
 import { ShoppingBag, Heart, Zap, Check } from 'lucide-react';
 import { Product } from '@/types';
 import { useAuthStore } from '@/store/authStore';
 import { useBadgeStore } from '@/store/badgeStore';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import api from '@/services/api';
 
 interface MobileStickyBuyBarProps {
@@ -17,7 +19,7 @@ export const MobileStickyBuyBar: React.FC<MobileStickyBuyBarProps> = ({
   quantity = 1,
   isWishlisted = false,
 }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const { fetchCounts } = useBadgeStore();
 
@@ -27,7 +29,7 @@ export const MobileStickyBuyBar: React.FC<MobileStickyBuyBarProps> = ({
 
   const handleWishlistToggle = async () => {
     if (!isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
     setWishlisted(!wishlisted);
@@ -41,7 +43,7 @@ export const MobileStickyBuyBar: React.FC<MobileStickyBuyBarProps> = ({
 
   const handleAddToCart = async (directCheckout: boolean = false) => {
     if (!isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
     setAdding(true);
@@ -49,7 +51,7 @@ export const MobileStickyBuyBar: React.FC<MobileStickyBuyBarProps> = ({
       await api.post('/cart/items', { productId: product.id, quantity });
       fetchCounts();
       if (directCheckout) {
-        navigate('/checkout');
+        router.push('/checkout');
       } else {
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);

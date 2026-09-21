@@ -1,12 +1,15 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Heart, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
 import { Product } from '@/types';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
 
 export const WishlistPage: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { isAuthenticated } = useAuthStore();
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -14,11 +17,11 @@ export const WishlistPage: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
     fetchWishlist();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   const fetchWishlist = () => {
     setLoading(true);
@@ -41,7 +44,7 @@ export const WishlistPage: React.FC = () => {
     try {
       await api.post(`/wishlist/${productId}/move-to-cart`);
       setProducts(products.filter((p) => p.id !== productId));
-      navigate('/cart');
+      router.push('/cart');
     } catch (err) {
       console.error(err);
     }
@@ -72,7 +75,7 @@ export const WishlistPage: React.FC = () => {
         </p>
         <div>
           <Link
-            to="/shop"
+            href="/shop"
             className="inline-flex items-center space-x-2 bg-[#0A4D40] hover:bg-[#062E28] text-white font-bold text-xs py-3.5 px-8 rounded-full uppercase tracking-wider transition shadow-lg shadow-[#0A4D40]/20"
           >
             <span>Explore Sarees</span>
@@ -86,7 +89,7 @@ export const WishlistPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       <div>
-        <span className="text-xs font-bold uppercase tracking-widest text-brand-maroon">
+        <span className="text-xs font-bold uppercase tracking-widest text-[#0A4D40]">
           Saved Heirlooms
         </span>
         <h1 className="font-serif text-3xl font-bold text-stone-900 mt-1">
@@ -97,7 +100,7 @@ export const WishlistPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <div key={product.id} className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm flex flex-col justify-between">
-            <Link to={`/product/${product.id}`} className="block relative aspect-[3/4] bg-stone-100">
+            <Link href={`/product/${product.id}`} className="block relative aspect-[3/4] bg-stone-100">
               <img
                 src={product.primaryImageUrl}
                 alt={product.name}
@@ -107,7 +110,7 @@ export const WishlistPage: React.FC = () => {
 
             <div className="p-4 space-y-3">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-maroon">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#0A4D40]">
                   {product.categoryName}
                 </span>
                 <h3 className="font-serif text-sm font-semibold text-stone-900 line-clamp-1">

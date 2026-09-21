@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+'use client';
+
+import React, { useState, Suspense } from 'react';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
 import logoImg from '@/assets/logo.png';
 
-export const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuthStore();
 
   const [email, setEmail] = useState('');
@@ -17,7 +20,7 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   // Return url if redirected from protected route
-  const from = (location.state as any)?.from?.pathname || '/';
+  const from = searchParams.get('from') || '/';
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,9 +37,9 @@ export const LoginPage: React.FC = () => {
       login(user, token);
 
       if (user.role === 'ROLE_ADMIN' || user.roles?.includes('ROLE_ADMIN')) {
-        navigate('/admin');
+        router.push('/admin');
       } else {
-        navigate(from);
+        router.push(from);
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
@@ -48,9 +51,9 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#FAF8F5] flex flex-col justify-start sm:justify-center pt-4 pb-12 sm:py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center flex flex-col items-center mt-2 sm:mt-0">
-        <Link to="/" className="inline-flex items-center gap-2.5 mb-3 group">
+        <Link href="/" className="inline-flex items-center gap-2.5 mb-3 group">
           <img
-            src={logoImg}
+            src={typeof logoImg === 'string' ? logoImg : (logoImg as any)?.src || '/logo.png'}
             onError={(e) => {
               const target = e.currentTarget;
               if (target.src !== '/logo.png') {
@@ -150,7 +153,7 @@ export const LoginPage: React.FC = () => {
           <div className="mt-6 pt-4 border-t border-stone-100 text-center">
             <p className="text-xs text-stone-500">
               Don't have an account yet?{' '}
-              <Link to="/register" className="font-semibold text-[#0A4D40] hover:underline ml-1">
+              <Link href="/register" className="font-semibold text-[#0A4D40] hover:underline ml-1">
                 Create Account
               </Link>
             </p>
@@ -158,5 +161,13 @@ export const LoginPage: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+}
+
+export const LoginPage: React.FC = () => {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-xs text-stone-400">Loading sign in...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 };

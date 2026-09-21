@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { 
   CheckCircle2, 
   Clock, 
@@ -15,7 +18,8 @@ import {
 import api from '@/services/api';
 
 export const OrderDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
+  const id = params?.id as string;
 
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -72,8 +76,8 @@ export const OrderDetailPage: React.FC = () => {
           <h2 className="font-serif text-xl font-bold text-stone-900">Order Not Found</h2>
           <p className="text-stone-500 text-sm mt-2 mb-6">{error || 'The requested order could not be located.'}</p>
           <Link
-            to="/my-orders"
-            className="inline-flex items-center px-4 py-2 bg-brand-maroon text-white text-xs font-semibold rounded-lg hover:bg-brand-maroon-dark transition"
+            href="/my-orders"
+            className="inline-flex items-center px-4 py-2 bg-[#0A4D40] text-white text-xs font-semibold rounded-lg hover:bg-[#062E28] transition"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Orders
@@ -102,8 +106,8 @@ export const OrderDetailPage: React.FC = () => {
         {/* Navigation & Header */}
         <div className="flex items-center justify-between mb-8">
           <Link
-            to="/my-orders"
-            className="inline-flex items-center text-xs font-semibold text-stone-600 hover:text-brand-maroon uppercase tracking-wider transition"
+            href="/my-orders"
+            className="inline-flex items-center text-xs font-semibold text-stone-500 hover:text-[#0A4D40] transition"
           >
             <ArrowLeft className="w-4 h-4 mr-1.5" />
             Back to All Orders

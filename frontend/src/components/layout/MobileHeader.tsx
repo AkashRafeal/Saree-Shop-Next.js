@@ -1,39 +1,41 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { ChevronLeft, Search, X, Heart, ShoppingBag } from 'lucide-react';
 import { useBadgeStore } from '@/store/badgeStore';
 import logoImg from '@/assets/logo.png';
 
 export const MobileHeader: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const { cartCount, wishlistCount } = useBadgeStore();
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const isHome = location.pathname === '/';
+  const isHome = pathname === '/';
 
   // Determine subpage title
   const getPageTitle = () => {
-    const path = location.pathname;
-    if (path.startsWith('/product/')) return 'Product Details';
-    if (path === '/cart') return 'Shopping Bag';
-    if (path === '/wishlist') return 'My Wishlist';
-    if (path === '/checkout') return 'Checkout';
-    if (path.startsWith('/my-orders/')) return 'Order Details';
-    if (path === '/my-orders') return 'My Orders';
-    if (path === '/shop') return 'Saree Collection';
-    if (path === '/reviews') return 'Client Reviews';
-    if (path === '/login') return 'Welcome Back';
-    if (path === '/register') return 'Create Account';
+    if (pathname.startsWith('/product/')) return 'Product Details';
+    if (pathname === '/cart') return 'Shopping Bag';
+    if (pathname === '/wishlist') return 'My Wishlist';
+    if (pathname === '/checkout') return 'Checkout';
+    if (pathname.startsWith('/my-orders/')) return 'Order Details';
+    if (pathname === '/my-orders') return 'My Orders';
+    if (pathname === '/shop') return 'Saree Collection';
+    if (pathname === '/reviews') return 'Client Reviews';
+    if (pathname === '/login') return 'Welcome Back';
+    if (pathname === '/register') return 'Create Account';
     return '';
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
       setSearchOpen(false);
       setSearchQuery('');
     }
@@ -54,7 +56,7 @@ export const MobileHeader: React.FC = () => {
           <div className="flex items-center space-x-2">
             {!isHome && (
               <button
-                onClick={() => navigate(-1)}
+                onClick={() => router.back()}
                 aria-label="Go back"
                 className="p-2 -ml-2 text-stone-700 hover:text-[#0A4D40] transition-colors rounded-full active:bg-stone-100"
               >
@@ -64,11 +66,11 @@ export const MobileHeader: React.FC = () => {
 
             {isHome ? (
               <Link
-                to="/"
+                href="/"
                 className="flex items-center gap-2 select-none no-underline border-none bg-transparent"
               >
                 <img
-                  src={logoImg}
+                  src={typeof logoImg === 'string' ? logoImg : (logoImg as any)?.src || '/logo.png'}
                   onError={(e) => {
                     const target = e.currentTarget;
                     if (target.src !== '/logo.png') {
@@ -105,7 +107,7 @@ export const MobileHeader: React.FC = () => {
             </button>
 
             <Link
-              to="/wishlist"
+              href="/wishlist"
               aria-label="Wishlist"
               className="p-2 text-stone-700 hover:text-[#0A4D40] transition-colors relative rounded-full active:bg-stone-100"
             >
@@ -118,7 +120,7 @@ export const MobileHeader: React.FC = () => {
             </Link>
 
             <Link
-              to="/cart"
+              href="/cart"
               aria-label="Cart"
               className="p-2 text-stone-700 hover:text-[#0A4D40] transition-colors relative rounded-full active:bg-stone-100"
             >
@@ -181,7 +183,7 @@ export const MobileHeader: React.FC = () => {
                 <button
                   key={tag}
                   onClick={() => {
-                    navigate(`/shop?search=${encodeURIComponent(tag)}`);
+                    router.push(`/shop?search=${encodeURIComponent(tag)}`);
                     setSearchOpen(false);
                   }}
                   className="px-3.5 py-1.5 bg-stone-100 hover:bg-emerald-50 hover:text-[#0A4D40] rounded-full text-xs font-medium text-stone-700 transition-colors"

@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { 
   ChevronRight,
   Sparkles, 
@@ -218,7 +220,7 @@ export const HomePage: React.FC = () => {
 
               <div className="mt-8 flex items-center justify-center md:justify-start space-x-4 w-full md:w-auto">
                 <Link
-                  to={heroSlides[heroSlide].href}
+                  href={heroSlides[heroSlide].href}
                   className="inline-flex items-center px-8 py-3.5 bg-[#0A4D40] hover:bg-[#062E28] text-white text-xs font-semibold uppercase tracking-widest rounded-full transition-all shadow-md group"
                 >
                   <span>{heroSlides[heroSlide].cta}</span>
@@ -271,7 +273,7 @@ export const HomePage: React.FC = () => {
             {circularCategories.map((cat) => (
               <Link
                 key={cat.name}
-                to={cat.href}
+                href={cat.href}
                 className="flex flex-col items-center group shrink-0 focus:outline-none"
               >
                 <div className="w-[72px] h-[72px] sm:w-24 sm:h-24 rounded-full overflow-hidden p-0.5 border-2 border-stone-200/80 group-hover:border-[#0A4D40] transition-all duration-300 shadow-sm group-hover:shadow-md">
@@ -297,7 +299,7 @@ export const HomePage: React.FC = () => {
             Shop By <span className="text-[#0A4D40] font-bold">Occasion</span>
           </h2>
           <Link
-            to="/shop"
+            href="/shop"
             className="text-[11px] font-bold text-stone-600 hover:text-[#0A4D40] uppercase tracking-wider inline-flex items-center transition"
           >
             <span>VIEW ALL OCCASIONS</span>
@@ -309,7 +311,7 @@ export const HomePage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6">
           {/* Left Tall Card - The Wedding Edit */}
           <Link
-            to="/shop?category=bridal-sarees"
+            href="/shop?category=bridal-sarees"
             className="group relative md:col-span-1 md:row-span-2 h-96 md:h-auto rounded-xl overflow-hidden bg-stone-100 shadow-sm transition-all duration-500 hover:shadow-[0_16px_36px_-6px_rgba(212,175,55,0.45),0_0_20px_rgba(212,175,55,0.2)] hover:-translate-y-1"
           >
             <img
@@ -328,7 +330,7 @@ export const HomePage: React.FC = () => {
 
           {/* Middle Top Card - Haldi & Mehendi */}
           <Link
-            to="/shop?occasion=Haldi"
+            href="/shop?occasion=Haldi"
             className="group relative md:col-span-2 h-44 sm:h-52 rounded-xl overflow-hidden bg-stone-100 shadow-sm transition-all duration-500 hover:shadow-[0_16px_36px_-6px_rgba(212,175,55,0.45),0_0_20px_rgba(212,175,55,0.2)] hover:-translate-y-1"
           >
             <img
@@ -347,7 +349,7 @@ export const HomePage: React.FC = () => {
 
           {/* Right Top Card - Cocktail Night */}
           <Link
-            to="/shop?occasion=Party"
+            href="/shop?occasion=Party"
             className="group relative md:col-span-1 h-44 sm:h-52 rounded-xl overflow-hidden bg-stone-100 shadow-sm transition-all duration-500 hover:shadow-[0_16px_36px_-6px_rgba(212,175,55,0.45),0_0_20px_rgba(212,175,55,0.2)] hover:-translate-y-1"
           >
             <img
@@ -366,7 +368,7 @@ export const HomePage: React.FC = () => {
 
           {/* Middle Bottom Card - Festive Ready */}
           <Link
-            to="/shop?occasion=Festive"
+            href="/shop?occasion=Festive"
             className="group relative md:col-span-1 h-44 sm:h-52 rounded-xl overflow-hidden bg-stone-100 shadow-sm transition-all duration-500 hover:shadow-[0_16px_36px_-6px_rgba(212,175,55,0.45),0_0_20px_rgba(212,175,55,0.2)] hover:-translate-y-1"
           >
             <img
@@ -385,7 +387,7 @@ export const HomePage: React.FC = () => {
 
           {/* Right Bottom Card - Casual Ethnic */}
           <Link
-            to="/shop?category=cotton-linen"
+            href="/shop?category=cotton-linen"
             className="group relative md:col-span-2 h-44 sm:h-52 rounded-xl overflow-hidden bg-stone-100 shadow-sm transition-all duration-500 hover:shadow-[0_16px_36px_-6px_rgba(212,175,55,0.45),0_0_20px_rgba(212,175,55,0.2)] hover:-translate-y-1"
           >
             <img
@@ -411,7 +413,7 @@ export const HomePage: React.FC = () => {
             New <span className="text-[#0A4D40] font-bold">Arrivals</span>
           </h2>
           <Link
-            to="/shop?sort=newest"
+            href="/shop?sort=newest"
             className="text-[11px] font-bold text-stone-600 hover:text-[#0A4D40] uppercase tracking-wider inline-flex items-center transition"
           >
             <span>VIEW ALL PRODUCTS</span>
@@ -441,7 +443,7 @@ export const HomePage: React.FC = () => {
             Our Featured <span className="text-[#0A4D40] font-bold">Collection</span>
           </h2>
           <Link
-            to="/shop?featured=true"
+            href="/shop?featured=true"
             className="text-[11px] font-bold text-stone-600 hover:text-[#0A4D40] uppercase tracking-wider inline-flex items-center transition"
           >
             <span>VIEW ALL PRODUCTS</span>
@@ -471,7 +473,7 @@ export const HomePage: React.FC = () => {
             Reviews & <span className="text-[#0A4D40] font-bold">Ratings</span>
           </h2>
           <Link
-            to="/reviews"
+            href="/reviews"
             className="text-[11px] font-bold text-stone-600 hover:text-[#0A4D40] uppercase tracking-wider inline-flex items-center transition"
           >
             <span>VIEW ALL</span>
@@ -483,7 +485,7 @@ export const HomePage: React.FC = () => {
           {reviews.map((rev) => (
             <Link
               key={rev.id}
-              to="/reviews"
+              href="/reviews"
               className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md hover:border-[#0A4D40]/30 transition group"
             >
               <div>

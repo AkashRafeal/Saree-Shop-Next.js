@@ -12,17 +12,17 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
-    port: 5173,
+    port: Number(process.env.PORT) || 5174,
     // @ts-ignore
     allowedHosts: ['online-typical-aging-lived.trycloudflare.com', 'outlined-divorce-such-appendix.trycloudflare.com', '.trycloudflare.com', '.loca.lt', 'localhost', '127.0.0.1'],
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: process.env.VITE_BACKEND_URL || 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
       '/uploads': {
-        target: 'http://localhost:8080',
+        target: process.env.VITE_BACKEND_URL || 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
@@ -30,17 +30,17 @@ export default defineConfig({
   },
   preview: {
     host: '0.0.0.0',
-    port: 5173,
+    port: Number(process.env.PORT) || 5174,
     // @ts-ignore
     allowedHosts: ['online-typical-aging-lived.trycloudflare.com', 'outlined-divorce-such-appendix.trycloudflare.com', '.trycloudflare.com', '.loca.lt', 'localhost', '127.0.0.1'],
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: process.env.VITE_BACKEND_URL || 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
       '/uploads': {
-        target: 'http://localhost:8080',
+        target: process.env.VITE_BACKEND_URL || 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
