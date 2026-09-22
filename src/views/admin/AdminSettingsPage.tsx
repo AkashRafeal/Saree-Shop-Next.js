@@ -47,7 +47,7 @@ const DEFAULT_SETTINGS: AtelierSettings = {
 export const AdminSettingsPage: React.FC = () => {
   const [settings, setSettings] = useState<AtelierSettings>(() => {
     try {
-      const saved = localStorage.getItem('sareeaura_atelier_settings');
+      const saved = localStorage.getItem('nivicollections_atelier_settings');
       return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
     } catch {
       return DEFAULT_SETTINGS;
@@ -66,7 +66,7 @@ export const AdminSettingsPage: React.FC = () => {
     setSaving(true);
     setTimeout(() => {
       try {
-        localStorage.setItem('sareeaura_atelier_settings', JSON.stringify(settings));
+        localStorage.setItem('nivicollections_atelier_settings', JSON.stringify(settings));
       } catch (err) {
         console.error('Failed to save settings to localStorage', err);
       }

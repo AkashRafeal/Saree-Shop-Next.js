@@ -1,6 +1,6 @@
-# SareeAura | Luxury Indian Saree E-Commerce Platform
+# NiVi Collections | Luxury Indian Saree E-Commerce Platform
 
-SareeAura is a luxury Indian fashion and saree e-commerce platform built as a **Fullstack Next.js 14** application (App Router, TypeScript, Tailwind CSS, Prisma ORM, MySQL 8).
+NiVi Collections is a luxury Indian fashion and saree e-commerce platform built as a **Fullstack Next.js 14** application (App Router, TypeScript, Tailwind CSS, Prisma ORM, MySQL 8).
 
 ---
 
@@ -24,7 +24,7 @@ SareeAura is a luxury Indian fashion and saree e-commerce platform built as a **
 ### 1. Database Setup
 Ensure MySQL is running and your `.env` contains the database connection string:
 ```env
-DATABASE_URL="mysql://root:root@localhost:3306/sareeaura_db"
+DATABASE_URL="mysql://root:root@localhost:3306/nivicollections_db"
 ```
 
 ### 2. Install & Generate
@@ -52,4 +52,4 @@ npm run start
 
 ## Seed Accounts
 - **Admin**: `admin@nivicouture.com` / `Admin@123`
-- **Customer**: `customer@sareeaura.com` / `Customer@123`
+- **Customer**: `customer@nivicollections.com` / `Customer@123`

@@ -1,10 +1,10 @@
 -- =======================================================
--- SareeAura E-Commerce Platform - Database Initialization
+-- NiVi Collections E-Commerce Platform - Database Initialization
 -- MySQL 8.0+
 -- =======================================================
 
-CREATE DATABASE IF NOT EXISTS `sareeaura_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `sareeaura_db`;
+CREATE DATABASE IF NOT EXISTS `nivicollections_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `nivicollections_db`;
 
 -- Set SQL Modes
 SET FOREIGN_KEY_CHECKS = 0;

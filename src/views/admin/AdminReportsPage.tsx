@@ -56,7 +56,7 @@ export const AdminReportsPage: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `SareeAura_Commerce_Report_${selectedPeriod.replace(/\s+/g, '_')}.csv`);
+    link.setAttribute('download', `NiViCollections_Commerce_Report_${selectedPeriod.replace(/\s+/g, '_')}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

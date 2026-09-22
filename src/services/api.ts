@@ -21,7 +21,7 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('sareeaura_token');
+      const token = localStorage.getItem('nivicollections_token');
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -37,8 +37,8 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('sareeaura_token');
-        localStorage.removeItem('sareeaura_user');
+        localStorage.removeItem('nivicollections_token');
+        localStorage.removeItem('nivicollections_user');
       }
     }
     return Promise.reject(error);

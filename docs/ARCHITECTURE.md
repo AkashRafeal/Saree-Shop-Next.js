@@ -1,37 +1,46 @@
-# SareeAura Architecture Specification
+# NiVi Collections Architecture Specification
 
 ## 1. Overview
-SareeAura is a luxury Indian Saree e-commerce platform built on a **Modular Monolith** architecture.
-- **Backend**: Single Spring Boot 3.3 application with clear domain boundaries.
-- **Frontend**: React 18/19 SPA built with Vite, TypeScript, Tailwind CSS, TanStack Query, and Zustand.
-- **Database**: MySQL 8.0 with normalized schema and transactional consistency.
+NiVi Collections is a luxury Indian Saree e-commerce platform built as a **Fullstack Next.js 14** application.
+- **Framework**: Next.js 14 (App Router) with React 18, TypeScript, and Tailwind CSS.
+- **Backend**: Native Next.js App Router API Route Handlers (`src/app/api/...`).
+- **Database & ORM**: MySQL 8.0 with Prisma ORM for type-safe data access.
+- **State Management**: TanStack Query (server-state caching) and Zustand (client UI badges/auth).
+- **Security**: JWT token generation and verification with `bcryptjs` password encryption.
 
-## 2. Modular Monolith Backend Boundaries
-The backend application package `com.sareeaura` is structured strictly by business capabilities:
+## 2. Directory Structure
 
 ```
-com.sareeaura
-├── auth          # Registration, login, JWT token generation & refresh
-├── user          # User profiles, customer accounts
-├── product       # Sarees, variants, specifications, images
-├── category      # Saree categories, weaves, fabrics, occasions
-├── inventory     # Stock levels, reservations, low stock alerts
-├── cart          # Shopping cart management
-├── wishlist      # Saved items
-├── order         # Orders, immutable snapshots, status workflow
-├── payment       # Razorpay integration, webhook/signature verification
-├── coupon        # Discounts, promotional codes, usage rules
-├── review        # Customer reviews, ratings, verified purchases
-├── banner        # Promotional banners, hero slides
-├── notification  # Email alerts and system notifications
-├── admin         # Administrative dashboards, reporting, operations
-├── security      # Spring Security 6 & JWT authentication filters
-├── config        # Application, OpenAPI/Swagger, CORS configuration
-├── exception     # Global API error handlers and custom exceptions
-└── common        # Shared DTO envelopes, constants, base entities
+d:/Saree Shop - Copy/
+├── prisma/
+│   └── schema.prisma        # Database models, enums, relations
+├── public/
+│   └── uploads/             # Saree imagery and uploaded assets
+├── src/
+│   ├── app/
+│   │   ├── (auth)/          # Customer authentication pages (login, register)
+│   │   ├── (storefront)/    # Public customer pages (shop, product, cart, orders)
+│   │   ├── admin/           # Admin dashboard & management interfaces
+│   │   └── api/             # Native Next.js 14 API Route Handlers
+│   │       ├── auth/        # Login, register, me
+│   │       ├── products/    # Product catalog, filters, curated collections
+│   │       ├── categories/  # Category hierarchy
+│   │       ├── cart/        # Shopping cart operations
+│   │       ├── wishlist/    # Wishlist operations
+│   │       ├── orders/      # Orders and status cancellation
+│   │       ├── coupons/     # Coupon validation and listings
+│   │       ├── reviews/     # Customer reviews and moderation
+│   │       ├── banners/     # Promotional hero banners
+│   │       ├── admin/       # Dashboard KPI analytics, CRUD operations
+│   │       ├── upload/      # Multipart file uploads
+│   │       └── health/      # Service healthcheck
+│   ├── components/          # Reusable UI, layout, and storefront components
+│   ├── lib/
+│   │   ├── prisma.ts        # Prisma Client singleton
+│   │   ├── auth.ts          # JWT and password encryption helpers
+│   │   ├── api-response.ts  # Standardized API response format
+│   │   └── serializers.ts   # Model to DTO serialization
+│   ├── services/            # Client API services
+│   └── types/               # TypeScript interfaces and declarations
+└── Dockerfile               # Production multi-stage Next.js Dockerfile
 ```
-
-## 3. Communication Rules Between Modules
-- Modules interact via well-defined Service interfaces and DTOs.
-- Avoid direct cross-module entity relationships that create hard database coupling.
-- Individual modules are designed to be easily extractable into standalone microservices in the future if required.

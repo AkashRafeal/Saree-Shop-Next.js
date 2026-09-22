@@ -3,17 +3,17 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8.0
-    container_name: sareeaura-mysql
+    container_name: nivicollections-mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: sareeaura_db
+      MYSQL_DATABASE: nivicollections_db
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - sareeaura-net
+      - nivicollections-net
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
       interval: 10s
@@ -24,13 +24,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: sareeaura-app
+    container_name: nivicollections-app
     restart: unless-stopped
     depends_on:
       mysql:
         condition: service_healthy
     environment:
-      DATABASE_URL: mysql://root:root@mysql:3306/sareeaura_db
+      DATABASE_URL: mysql://root:root@mysql:3306/nivicollections_db
       PORT: 3000
       JWT_SECRET: ${JWT_SECRET:-SareeShopSuperSecretLuxuryKey2026WithSufficientLengthForHMACSHA256Algorithm}
       RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-rzp_test_sareeshop2026}
@@ -38,12 +38,12 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - sareeaura-net
+      - nivicollections-net
 
 volumes:
   mysql_data:
     driver: local
 
 networks:
-  sareeaura-net:
+  nivicollections-net:
     driver: bridge

@@ -17,7 +17,7 @@ export const useBadgeStore = create<BadgeState>((set) => ({
   setWishlistCount: (wishlistCount) => set({ wishlistCount }),
   fetchCounts: async () => {
     if (typeof window === 'undefined') return;
-    const token = localStorage.getItem('sareeaura_token');
+    const token = localStorage.getItem('nivicollections_token');
     if (!token) {
       set({ cartCount: 0, wishlistCount: 0 });
       return;

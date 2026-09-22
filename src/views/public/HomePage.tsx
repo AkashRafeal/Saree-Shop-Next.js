@@ -138,7 +138,7 @@ export const HomePage: React.FC = () => {
     {
       id: 2,
       rating: 5.0,
-      quote: "This is my second order from SareeAura. I loved them both! They arrived well packed with authentic Silk Mark certificates, exactly as shown in pictures.",
+      quote: "This is my second order from NiVi Collections. I loved them both! They arrived well packed with authentic Silk Mark certificates, exactly as shown in pictures.",
       author: 'Indu Vatsala',
       location: 'India',
     },

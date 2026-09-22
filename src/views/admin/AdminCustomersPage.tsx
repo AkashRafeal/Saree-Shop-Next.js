@@ -201,7 +201,7 @@ export const AdminCustomersPage: React.FC = () => {
           id: u.id,
           firstName: u.firstName || 'Customer',
           lastName: u.lastName || '',
-          email: u.email || 'customer@sareeaura.com',
+          email: u.email || 'customer@nivicollections.com',
           phone: u.phone || '+91 98765 00000',
           roles: u.roles || ['ROLE_CUSTOMER'],
           joinedDate: isDefaultAnanya ? '10 Jan 2024' : 'Today',
@@ -1001,7 +1001,7 @@ export const AdminCustomersPage: React.FC = () => {
                   Close
                 </button>
                 <a
-                  href={`mailto:${selectedCustomer.email}?subject=Exclusive Atelier Invitation from SareeAura`}
+                  href={`mailto:${selectedCustomer.email}?subject=Exclusive Atelier Invitation from NiVi Collections`}
                   className="inline-flex items-center px-5 py-2 rounded-full text-xs font-semibold bg-[#0A4D40] text-white hover:bg-[#062E28] transition shadow-xs cursor-pointer"
                 >
                   <Mail className="w-3.5 h-3.5 mr-1.5" />

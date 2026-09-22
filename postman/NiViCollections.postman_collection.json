@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "sareeaura-api-collection-v1",
-    "name": "SareeAura API Collection",
-    "description": "Production-grade REST APIs for SareeAura Indian Saree E-Commerce Platform",
+    "_postman_id": "nivicollections-api-collection-v1",
+    "name": "NiVi Collections API Collection",
+    "description": "Production-grade REST APIs for NiVi Collections Indian Saree E-Commerce Platform",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

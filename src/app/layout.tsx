@@ -18,7 +18,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'SareeAura | Luxury Indian Saree E-Commerce Platform',
+  title: 'NiVi Collections | Luxury Indian Saree E-Commerce Platform',
   description: 'Discover handcrafted luxury Indian sarees, Banarasi brocades, Kanchipuram silks, and designer ensembles.',
   icons: {
     icon: '/favicon.svg',

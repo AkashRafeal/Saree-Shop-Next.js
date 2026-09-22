@@ -29,8 +29,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   hydrate: () => {
     if (typeof window === 'undefined') return;
     try {
-      const savedToken = localStorage.getItem('sareeaura_token');
-      const savedUser = localStorage.getItem('sareeaura_user');
+      const savedToken = localStorage.getItem('nivicollections_token');
+      const savedUser = localStorage.getItem('nivicollections_user');
       if (savedToken && savedUser) {
         set({
           user: JSON.parse(savedUser),
@@ -50,16 +50,16 @@ export const useAuthStore = create<AuthState>((set) => ({
     const normalizedRole = user.role || (user.roles?.includes('ROLE_ADMIN') ? 'ROLE_ADMIN' : 'ROLE_CUSTOMER');
     const normalizedUser = { ...user, role: normalizedRole };
     if (typeof window !== 'undefined') {
-      localStorage.setItem('sareeaura_token', token);
-      localStorage.setItem('sareeaura_user', JSON.stringify(normalizedUser));
+      localStorage.setItem('nivicollections_token', token);
+      localStorage.setItem('nivicollections_user', JSON.stringify(normalizedUser));
     }
     set({ user: normalizedUser, token, isAuthenticated: true, isHydrated: true });
   },
 
   logout: () => {
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('sareeaura_token');
-      localStorage.removeItem('sareeaura_user');
+      localStorage.removeItem('nivicollections_token');
+      localStorage.removeItem('nivicollections_user');
     }
     set({ user: null, token: null, isAuthenticated: false, isHydrated: true });
   },

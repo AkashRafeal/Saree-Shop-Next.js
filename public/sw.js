@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sareeaura-pwa-v1';
+const CACHE_NAME = 'nivicollections-pwa-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
